@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Development Portfolio</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- PDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
+
 <body>
+
     <header>
         <h1>Welcome to My Software development Portfolio</h1>
+
         <nav>
             <a href="index.html">Home</a>
             <a href="about.html">About Me</a>
@@ -18,13 +24,39 @@
 
     <div class="container">
         <h2>Hi, I'm Ankesh</h2>
-        <p>I'm a game developer and tester with 5+ years of experience. Check out my work and learn more about me!</p>
+
+        <p>
+            I'm a game developer and tester with 5+ years of experience.
+            Check out my work and learn more about me!
+        </p>
+
         <a href="projects.html" class="btn">View My Projects</a>
         <a href="about.html" class="btn">Learn More About Me</a>
+
+        <!-- Download PDF Button -->
+        <br><br>
+
+        <button onclick="downloadPDF()" class="btn">
+            Download Portfolio PDF
+        </button>
     </div>
 
     <footer>
         <p>&copy; 2025. All rights reserved.</p>
     </footer>
+
+    <!-- PDF Download Script -->
+    <script>
+        function downloadPDF() {
+
+            // Whole page will be exported
+            const element = document.body;
+
+            html2pdf()
+                .from(element)
+                .save('Ankesh_Portfolio.pdf');
+        }
+    </script>
+
 </body>
 </html>
