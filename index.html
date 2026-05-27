@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>My Development Portfolio</title>
+
     <link rel="stylesheet" href="styles.css">
 
     <!-- PDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 </head>
 
 <body>
 
     <header>
-        <h1>Welcome to My Software development Portfolio</h1>
+
+        <h1>Welcome to My Software Development Portfolio</h1>
 
         <nav>
             <a href="index.html">Home</a>
             <a href="about.html">About Me</a>
             <a href="projects.html">Projects</a>
         </nav>
+
     </header>
 
     <div class="container">
+
         <h2>Hi, I'm Ankesh</h2>
 
         <p>
@@ -30,15 +38,21 @@
             Check out my work and learn more about me!
         </p>
 
-        <a href="projects.html" class="btn">View My Projects</a>
-        <a href="about.html" class="btn">Learn More About Me</a>
+        <a href="projects.html" class="btn">
+            View My Projects
+        </a>
 
-        <!-- Download PDF Button -->
+        <a href="about.html" class="btn">
+            Learn More About Me
+        </a>
+
         <br><br>
 
+        <!-- Download PDF Button -->
         <button onclick="downloadPDF()" class="btn">
-            Download Portfolio PDF
+            Download Complete Portfolio PDF
         </button>
+
     </div>
 
     <footer>
@@ -47,16 +61,82 @@
 
     <!-- PDF Download Script -->
     <script>
-        function downloadPDF() {
 
-            // Whole page will be exported
-            const element = document.body;
+        async function downloadPDF() {
 
+            // Pages to combine
+            const pages = [
+                'index.html',
+                'about.html',
+                'projects.html'
+            ];
+
+            // Hidden combined container
+            const combinedContent = document.createElement('div');
+
+            // Loop through all pages
+            for (const page of pages) {
+
+                // Fetch page content
+                const response = await fetch(page);
+
+                const htmlText = await response.text();
+
+                // Parse HTML
+                const parser = new DOMParser();
+
+                const doc = parser.parseFromString(htmlText, 'text/html');
+
+                // Create section container
+                const section = document.createElement('div');
+
+                // Add only body content
+                section.innerHTML = doc.body.innerHTML;
+
+                // Add spacing between pages
+                section.style.marginBottom = '50px';
+
+                // Append section
+                combinedContent.appendChild(section);
+
+                // Horizontal separator
+                const hr = document.createElement('hr');
+
+                hr.style.margin = '40px 0';
+
+                combinedContent.appendChild(hr);
+            }
+
+            // Generate PDF
             html2pdf()
-                .from(element)
-                .save('Ankesh_Portfolio.pdf');
+                .set({
+                    margin: 10,
+
+                    filename: 'Ankesh_Portfolio.pdf',
+
+                    image: {
+                        type: 'jpeg',
+                        quality: 1
+                    },
+
+                    html2canvas: {
+                        scale: 2
+                    },
+
+                    jsPDF: {
+                        unit: 'mm',
+                        format: 'a4',
+                        orientation: 'portrait'
+                    }
+                })
+
+                .from(combinedContent)
+
+                .save();
         }
+
     </script>
 
 </body>
+
 </html>
